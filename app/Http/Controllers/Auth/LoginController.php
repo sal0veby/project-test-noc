@@ -116,7 +116,9 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-//        $permission = User::with('roles.permissions')->with('permissions')->find($user->id);
+//        $permission = User::with('roles.permissions')
+//            ->with('permissions')
+//            ->find($user->id);
 //
 //
 //        dd($permission);
