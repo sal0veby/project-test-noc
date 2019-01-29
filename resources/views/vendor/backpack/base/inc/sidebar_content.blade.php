@@ -40,6 +40,13 @@
 </li>
 
 <li>
+    <a href="{{ backpack_url('work_type') }}">
+        <i class="fa fa-dot-circle-o"></i>
+        <span>{{ __('Work type') }}</span>
+    </a>
+</li>
+
+<li>
     <a href="{{ backpack_url('class') }}">
         <i class="fa fa-list"></i>
         <span>{{ __('Class') }}</span>
@@ -53,12 +60,6 @@
     </a>
 </li>
 
-<li>
-    <a href="{{ backpack_url('work_type') }}">
-        <i class="fa fa-dot-circle-o"></i>
-        <span>{{ __('Work type') }}</span>
-    </a>
-</li>
 
 <!-- Users, Roles Permissions -->
 <li class="header">
@@ -97,4 +98,6 @@
         <span>{{ __('Setting') }}</span>
     </a>
 </li>
+
+{{ dump(\Auth::user()) }}
 

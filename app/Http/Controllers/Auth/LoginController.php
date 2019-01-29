@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\User;
 use Backpack\Base\app\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -104,4 +106,22 @@ class LoginController extends Controller
 
         return view('backpack::auth.login', $this->data);
     }
+
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+//        $permission = User::with('roles.permissions')->with('permissions')->find($user->id);
+//
+//
+//        dd($permission);
+//        $permissions = User::
+
+    }
+
 }

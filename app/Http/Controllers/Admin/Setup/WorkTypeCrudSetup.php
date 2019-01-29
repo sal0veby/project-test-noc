@@ -59,24 +59,6 @@ trait WorkTypeCrudSetup
         ]);
 
         $this->crud->addColumn([
-            'label' => __('Class'), // Table column heading
-            'type' => "select",
-            'name' => 'classes_id', // the column that contains the ID of that connected entity;
-            'entity' => 'classes', // the method that defines the relationship in your Model
-            'attribute' => "name", // foreign key attribute that is shown to user
-            'model' => Classes::class, // foreign key model
-        ]);
-
-        $this->crud->addColumn([
-            'label' => __('Location'), // Table column heading
-            'type' => "select",
-            'name' => 'location_id', // the column that contains the ID of that connected entity;
-            'entity' => 'locations', // the method that defines the relationship in your Model
-            'attribute' => "name", // foreign key attribute that is shown to user
-            'model' => Location::class, // foreign key model
-        ]);
-
-        $this->crud->addColumn([
             'label' => __('Status'),
             'name' => 'active',
             'type' => 'boolean',
@@ -104,24 +86,6 @@ trait WorkTypeCrudSetup
 
     protected function field()
     {
-        $this->crud->addField([
-            'label' => __("Class"),
-            'type' => 'select',
-            'name' => 'classes_id', // the db column for the foreign key
-            'entity' => 'classes', // the method that defines the relationship in your Model
-            'attribute' => 'name', // foreign key attribute that is shown to user
-            'model' => Classes::class // foreign key model
-        ]);
-
-        $this->crud->addField([
-            'label' => __("Location"),
-            'type' => 'select_location',
-            'name' => 'location_id', // the db column for the foreign key
-            'name_relation' => 'classes_id',
-            'entity' => 'locations', // the method that defines the relationship in your Model
-            'attribute' => 'name', // foreign key attribute that is shown to user
-            'model' => Location::class, // foreign key model
-        ]);
 
         $this->crud->addField([
             'name' => 'name',

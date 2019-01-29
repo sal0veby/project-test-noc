@@ -12,5 +12,11 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+//    dd('AAA');
+    return redirect('login');
 });
+
+Route::get('/home', function () {
+    return redirect('login');
+});
+

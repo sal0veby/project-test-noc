@@ -27,8 +27,6 @@ class WorkTypeUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required|min:2|max:255|unique:work_types,name,' . optional(request())->get('id'),
-            'classes_id' => 'required',
-            'location_id' => 'required',
         ];
     }
 

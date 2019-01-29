@@ -19,7 +19,7 @@ class WorkType extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     // protected $guarded = ['id'];
-    protected $fillable = ['name', 'active', 'classes_id', 'location_id'];
+    protected $fillable = ['name', 'active'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -35,15 +35,6 @@ class WorkType extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function classes()
-    {
-        return $this->belongsTo(Classes::class, 'classes_id');
-    }
-
-    public function locations()
-    {
-        return $this->belongsTo(Location::class, 'location_id');
-    }
 
     /*
     |--------------------------------------------------------------------------

@@ -27,8 +27,6 @@ class WorkTypeStoreRequest extends FormRequest
     {
         return [
              'name' => 'required|min:2|max:255|unique:work_types,name',
-             'classes_id' => 'required',
-             'location_id' => 'required',
         ];
     }
 

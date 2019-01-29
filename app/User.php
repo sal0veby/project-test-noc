@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Models\Permission;
+use App\Models\Role;
 use Backpack\CRUD\CrudTrait;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -31,4 +33,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+    public function permissions(){
+        return $this->belongsToMany(Permission::class);
+    }
+
+    public function roles(){
+        return $this->belongsToMany(Role::class);
+    }
 }
