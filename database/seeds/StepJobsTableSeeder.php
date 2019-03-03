@@ -12,66 +12,73 @@ class StepJobsTableSeeder extends Seeder
         $names = [
             [
                 'name' => [
-                    'en' => 'AAA',
-                    'th' => 'เปิดเอกสารงาน'
+                    'en' => 'Open the job document. Request to work.',
+                    'th' => 'เปิดเอกสารงานขอเข้าทำงาน',
                 ],
-                'step' => 1
+                'step' => 1,
             ],
             [
                 'name' => [
-                    'en' => 'BBB',
-                    'th' => 'พิจารณาอนุมัติการขอเข้าทำงาน'
+                    'en' => 'Waiting to consider the approval of work.',
+                    'th' => 'รอพิจารณาอนุมัติการขอเข้าทำงาน',
                 ],
-                'step' => 2.1
+                'step' => 2.1,
             ],
             [
                 'name' => [
-                    'en' => 'CCC',
-                    'th' => 'พิจารณาอนุมัติการขอเข้าทำงาน'
+                    'en' => 'Waiting for approval from the auditor.',
+                    'th' => 'รอพิจารณาอนุมัติจากผู้ตรวจสอบ',
                 ],
-                'step' => 2.2
+                'step' => 2.2,
             ],
             [
                 'name' => [
-                    'en' => 'DDD',
-                    'th' => 'พิจารณาอนุมัติการขอเข้าทำงาน'
+                    'en' => 'Waiting for approval from the area administrator.',
+                    'th' => 'รอพิจารณาอนุมัติจากผู้ดูแพื้นที่',
                 ],
-                'step' => 2.3
+                'step' => 2.3,
             ],
             [
                 'name' => [
-                    'en' => 'EEE',
-                    'th' => 'ก่อนเริ่มดำเนินงาน'
+                    'en' => 'Waiting for approval from the supervisor or project owner.',
+                    'th' => 'รอการอนุมัติจากผู้คุมงาน / เจ้าของโครงการ',
                 ],
-                'step' => 3.1
+                'step' => 3.1,
             ],
             [
                 'name' => [
-                    'en' => 'FFF',
-                    'th' => 'ก่อนเริ่มดำเนินงาน'
+                    'en' => 'Security officers are checking.',
+                    'th' => 'เจ้าหน้าที่รักษาความปลอดภัยกำลังตรวจสอบ',
                 ],
-                'step' => 3.2
+                'step' => 3.2,
             ],
             [
                 'name' => [
-                    'en' => 'GGG',
-                    'th' => 'ตรวจสอบการดำเนินงาน'
+                    'en' => 'Checking operations.',
+                    'th' => 'กำลังตรวจสอบการดำเนินงาน',
                 ],
-                'step' => 4
+                'step' => 4,
             ],
             [
                 'name' => [
-                    'en' => 'HHH',
-                    'th' => 'ดำเนินงานเสร็จสิ้น'
+                    'en' => 'Check the neatness from the supervisor or owner.',
+                    'th' => 'ตรวจสอบความเรียบร้อยจากผู้คุมงาน / เจ้าของงาน',
                 ],
-                'step' => 5.1
+                'step' => 5.1,
             ],
             [
                 'name' => [
-                    'en' => 'III',
-                    'th' => 'ดำเนินงานเสร็จสิ้น'
+                    'en' => 'Security officers check before leaving the area.',
+                    'th' => 'เจ้าหน้าที่รักษาความปลอดภัยตรวจสอบก่อนออกจากพื้นที่',
                 ],
-                'step' => 5.2
+                'step' => 5.2,
+            ],
+            [
+                'name' => [
+                    'en' => 'Check completed.',
+                    'th' => 'ทำการตรวจสอบเสร็จสิ้น',
+                ],
+                'step' => 6,
             ],
         ];
 
@@ -80,11 +87,11 @@ class StepJobsTableSeeder extends Seeder
             DB::table('step_jobs')->updateOrInsert([
                 'step' => $val['step'],
             ], [
-                'name' => json_encode($val['name']),
-                'step' => $val['step'],
-                'active' => true,
+                'name'       => json_encode($val['name']),
+                'step'       => $val['step'],
+                'active'     => true,
                 'created_at' => \Carbon\Carbon::now(),
-                'updated_at' => \Carbon\Carbon::now()
+                'updated_at' => \Carbon\Carbon::now(),
             ]);
         }
 

@@ -28,7 +28,7 @@ class JobListCrudController extends CrudController
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry
 
-        $this->createTransactionJob(1, false);
+        $this->createTransactionJob(1, 1);
 
         return $redirect_location;
     }
@@ -48,14 +48,14 @@ class JobListCrudController extends CrudController
         return $redirect_location;
     }
 
-    protected function createTransactionJob($process_id, $approve)
+    protected function createTransactionJob($process_id, $state_id)
     {
         TransactionJob::create([
-            'job_id' => array_get($this->crud->entry, 'id'),
+            'job_id'     => array_get($this->crud->entry, 'id'),
             'process_id' => $process_id,
-            'approve' => $approve,
-            'name_user' => isset(Auth::user()->name) ? Auth::user()->name : '',
-            'name_tel' => isset(Auth::user()->tel) ? Auth::user()->tel : '',
+            'state_id'   => $state_id,
+            'name_user'  => isset(Auth::user()->name) ? Auth::user()->name : '',
+            'name_tel'   => isset(Auth::user()->tel) ? Auth::user()->tel : '',
         ]);
     }
 }

@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Admin\Setup;
 
 use App\Http\Requests\JobListStoreRequest as StoreRequest;
 use App\Http\Requests\JobListUpdateRequest as UpdateRequest;
+use App\Models\JobList;
 use App\Models\TransactionJob;
 
 
@@ -48,42 +49,93 @@ trait JobListCrudSetup
 
     protected function column()
     {
+        $result = [];
+        $job_list = $this->crud->getEntries();
+        if (!empty($job_list)) {
+
+            $jobList = new JobList();
+
+            $id = array_get($job_list[0], 'id');
+            $result_process = $jobList->getProcessJob($id);
+
+            $process_name = array_get($result_process, 'name', '');
+            $state_name = array_get($result_process, 'description', '');
+
+            if (!empty($process_name)) {
+                $process_decode = json_decode($process_name);
+                $result['process_name'] = $process_decode->{app()->getLocale()};
+            }
+
+            if (!empty($state_name)) {
+                $next_state_id = array_get($result_process, 'next_state_id');
+                if ($next_state_id == 1) {
+                    $result['state_name'] = __('Waiting for save');
+                } else {
+                    $result['state_name'] = __('Waiting for approve');
+                }
+            }
+        }
+
         $this->crud->addColumn([
-            'name' => 'row_number',
-            'label' => __('#'),
-            'type' => 'row_number',
-            'orderable' => false,
-            'searchLogic' => false
+            'name'        => 'row_number',
+            'label'       => __('#'),
+            'type'        => 'row_number',
+            'orderable'   => false,
+            'searchLogic' => false,
         ])->makeFirstColumn();
 
         $this->crud->addColumn([
-            'name' => 'iso_document_no',
-            'label' => __('ISO Document No'),
-            'type' => 'text',
-            'priority' => 1
+            'name'     => 'iso_document_no',
+            'label'    => __('Document No'),
+            'type'     => 'text',
+            'priority' => 1,
         ]);
 
         $this->crud->addColumn([
-            'name' => 'job_code_no',
-            'label' => __('Job Code No'),
-            'type' => 'model_function',
-            'function_name' => 'getProcessJob'
+            'name'     => 'job_code_no',
+            'label'    => __('Job Code No'),
+            'type'     => 'text',
+            'priority' => 2,
         ]);
 
         $this->crud->addColumn([
-            'label' => __('Created at'),
-            'name' => 'created_at',
-            'type' => 'datetime',
+            'name'     => 'process',
+            'label'    => __('Process'),
+            'type'     => 'text',
+            'suffix'   => array_get($result, 'process_name', ''),
+            'priority' => 1,
+        ]);
+
+        $this->crud->addColumn([
+            'name'     => 'state',
+            'label'    => __('State'),
+            'type'     => 'text',
+            'suffix'   => array_get($result, 'state_name', ''),
+            'priority' => 1,
+        ]);
+
+//        $this->crud->addColumn([
+//            'name'     => 'process',
+//            'label'    => __('Process'),
+//            'type'     => 'text',
+//            'suffix'   => array_get($result, 'process_name', ''),
+//            'priority' => 2,
+//        ]);
+
+        $this->crud->addColumn([
+            'label'     => __('Created at'),
+            'name'      => 'created_at',
+            'type'      => 'datetime',
             'orderable' => false,
-            'priority' => 3,
+            'priority'  => 3,
         ]);
 
         $this->crud->addColumn([
-            'label' => __('Updated at'),
-            'name' => 'updated_at',
-            'type' => 'datetime',
+            'label'     => __('Updated at'),
+            'name'      => 'updated_at',
+            'type'      => 'datetime',
             'orderable' => false,
-            'priority' => 3,
+            'priority'  => 3,
         ]);
     }
 
@@ -100,9 +152,10 @@ trait JobListCrudSetup
 
         if ($this->crud->actionIs('create') || $process_id == 2) {
             $this->processJobOne();
-        } else if (in_array($process_id, [3, 4])) {
-//            dd($process_id);
-            $this->processJobTwo();
+        } else {
+            if (in_array($process_id, [3, 4])) {
+                $this->processJobTwo();
+            }
         }
     }
 

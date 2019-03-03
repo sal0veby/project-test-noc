@@ -45,12 +45,12 @@ class JobList extends Model
     ];
 
     protected $casts = [
-        'owners' => 'array',
-        'supervisors' => 'array',
-        'contractors' => 'array',
-        'participants' => 'array',
+        'owners'            => 'array',
+        'supervisors'       => 'array',
+        'contractors'       => 'array',
+        'participants'      => 'array',
         'car_registrations' => 'array',
-        'taskmasters' => 'array',
+        'taskmasters'       => 'array',
     ];
 
     // protected $hidden = [];
@@ -127,36 +127,36 @@ class JobList extends Model
         $this->attributes['end_work_time'] = Carbon::parse("0000-01-01 $splitTimeStamp[1]")->format('Y-m-d H:i:s');
     }
 
-    public function getProcessJob()
+    public function getProcessJob($job_id)
     {
-        $job_id = $this->id;
-
         $transaction = new TransactionJob();
         $processJob = new ProcessJob();
         $stepJob = new StepJob();
 
-        $a = JobList::query()->select('')
-            ->join($transaction->getTable(), '', '', $transaction->getTable() . '.job_id')
-            ->join($processJob->getTable(), '', '', '')
-            ->join($stepJob->getTable(), '', '', '')
-            ->where('id', $job_id)
-            ->first();
+        $result = JobList::query()->select([
+            $processJob->getTable() . '.process_id',
+            $processJob->getTable() . '.state_id',
+            $processJob->getTable() . '.description',
+            $processJob->getTable() . '.next_process_id',
+            $processJob->getTable() . '.next_state_id',
+            $processJob->getTable() . '.next_description',
+            $stepJob->getTable() . '.name',
+        ])->leftJoin(
+            $transaction->getTable(),
+            $this->table . '.id',
+            '=',
+            $transaction->getTable() . '.job_id'
+        )->leftJoin($processJob->getTable(), function ($join) {
+            $join->on('transaction_jobs.process_id', '=', 'process_jobs.process_id');
+            $join->on('transaction_jobs.state_id', '=', 'process_jobs.state_id');
+        })->leftJoin(
+            $stepJob->getTable(),
+            $stepJob->getTable() . '.id',
+            '=',
+            $processJob->getTable() . '.next_process_id'
+        )->where($this->table . '.id', $job_id)->orderByDesc($transaction->getTable() . '.created_at')->first();
 
-
-        $process_job = JobList::with(['transaction_job'])
-            ->whereHas('process_job', function ($query) use ($job_id) {
-                $query->where('id', $job_id);
-            })
-            ->where('id', $job_id)
-            ->first();
-
-        dd($process_job);
-//        $transaction = TransactionJob::where('job_id', $this->id)->orderBy('id', 'DESC')->first();
-//        $process_job = ProcessJob::where('id' , array_get($transaction , 'process_id'))->first();
-//        dd($transaction_id);
-
-//        $process = JobList::query()->with(['transaction_job' , ''])->get();
-
+        return $result;
     }
 
     /*
