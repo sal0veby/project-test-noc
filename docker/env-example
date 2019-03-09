@@ -1,0 +1,12 @@
+VOLUMES_DRIVER=local
+
+APP_PATH=../
+
+SITE_AVAILABLE=./sites-available/
+
+### MySQL
+MYSQL_ROOT_PASSWORD=root
+MYSQL_DATABASE=db_noc
+MYSQL_USER=tool-noc
+MYSQL_PASSWORD=root1234
+
